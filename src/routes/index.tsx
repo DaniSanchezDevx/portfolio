@@ -382,97 +382,124 @@ type TimelineEntry = {
   tags: string[]
 }
 
+function sortNewestFirst(entries: TimelineEntry[]) {
+  return [...entries].sort((a, b) => {
+    const dateA = a.date.split(' — ')[0]
+    const dateB = b.date.split(' — ')[0]
+    return dateB.localeCompare(dateA)
+  })
+}
+
+function TimelineEntries({ entries }: { entries: TimelineEntry[] }) {
+  return (
+    <div className="relative">
+      {/* Vertical line */}
+      <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary/40 to-transparent" />
+
+      <div className="space-y-8 pl-16">
+        {entries.map((entry) => (
+          <div key={`${entry.type}-${entry.title}-${entry.date}`} className="relative">
+            {/* Icon dot */}
+            <div
+              className={`absolute -left-10 top-1 w-8 h-8 rounded-full flex items-center justify-center border-2 ${
+                entry.type === 'work'
+                  ? 'bg-primary/10 border-primary text-primary'
+                  : 'bg-accent/10 border-accent text-accent'
+              }`}
+            >
+              {entry.type === 'work' ? (
+                <Briefcase size={14} />
+              ) : (
+                <GraduationCap size={14} />
+              )}
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-5 card-glow">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
+                <div>
+                  <h3 className="font-semibold text-foreground">
+                    {entry.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {entry.subtitle}
+                  </p>
+                </div>
+                <Badge
+                  variant="secondary"
+                  className="text-xs shrink-0 self-start border border-border"
+                >
+                  {entry.date}
+                </Badge>
+              </div>
+              {entry.summary && (
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  {entry.summary}
+                </p>
+              )}
+              {entry.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {entry.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className="text-xs border-primary/20 text-primary/80"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Timeline() {
-  const jobs: TimelineEntry[] = allJobs.map((j) => ({
+  const jobs: TimelineEntry[] = sortNewestFirst(allJobs.map((j) => ({
     type: 'work',
     title: j.jobTitle,
     subtitle: `${j.company} · ${j.location}`,
     date: `${j.startDate} — ${j.endDate ?? 'Present'}`,
     summary: j.summary,
     tags: j.tags,
-  }))
+  })))
 
-  const education: TimelineEntry[] = allEducations.map((e) => ({
+  const education: TimelineEntry[] = sortNewestFirst(allEducations.map((e) => ({
     type: 'education',
     title: e.school,
     subtitle: e.summary,
     date: `${e.startDate} — ${e.endDate ?? 'Present'}`,
     summary: '',
     tags: e.tags,
-  }))
-
-  // Combine and sort newest first by the startDate string (ISO-sortable)
-  const entries: TimelineEntry[] = [...jobs, ...education].sort((a, b) => {
-    const dateA = a.date.split(' — ')[0]
-    const dateB = b.date.split(' — ')[0]
-    return dateB.localeCompare(dateA)
-  })
+  })))
 
   return (
     <section id="experience" className="py-24 px-4 bg-secondary/20">
       <div className="max-w-3xl mx-auto">
         <SectionHeading title="Experience & Education" subtitle="My journey so far" />
 
-        <div className="mt-12 relative">
-          {/* Vertical line */}
-          <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary/40 to-transparent" />
+        <div className="mt-12 space-y-14">
+          <div>
+            <div className="mb-6 flex items-center gap-3 text-xl font-semibold text-foreground">
+              <span className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                <Briefcase size={18} />
+              </span>
+              Work Experience
+            </div>
+            <TimelineEntries entries={jobs} />
+          </div>
 
-          <div className="space-y-8 pl-16">
-            {entries.map((entry, i) => (
-              <div key={i} className="relative">
-                {/* Icon dot */}
-                <div
-                  className={`absolute -left-10 top-1 w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                    entry.type === 'work'
-                      ? 'bg-primary/10 border-primary text-primary'
-                      : 'bg-accent/10 border-accent text-accent'
-                  }`}
-                >
-                  {entry.type === 'work' ? (
-                    <Briefcase size={14} />
-                  ) : (
-                    <GraduationCap size={14} />
-                  )}
-                </div>
-
-                <div className="bg-card border border-border rounded-xl p-5 card-glow">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-2">
-                    <div>
-                      <h3 className="font-semibold text-foreground">
-                        {entry.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {entry.subtitle}
-                      </p>
-                    </div>
-                    <Badge
-                      variant="secondary"
-                      className="text-xs shrink-0 self-start border border-border"
-                    >
-                      {entry.date}
-                    </Badge>
-                  </div>
-                  {entry.summary && (
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-3">
-                      {entry.summary}
-                    </p>
-                  )}
-                  {entry.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {entry.tags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="outline"
-                          className="text-xs border-primary/20 text-primary/80"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+          <div>
+            <div className="mb-6 flex items-center gap-3 text-xl font-semibold text-foreground">
+              <span className="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
+                <GraduationCap size={18} />
+              </span>
+              Education
+            </div>
+            <TimelineEntries entries={education} />
           </div>
         </div>
       </div>
