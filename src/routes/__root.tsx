@@ -14,7 +14,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Your Name — Developer Portfolio' },
+      { title: 'Daniel Sánchez — Developer Portfolio' },
       {
         name: 'description',
         content:
@@ -81,15 +81,15 @@ function NavBar({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
       }`}
     >
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-        {/* Logo / Name — REPLACE "YN" and "Your Name" with your initials and name */}
+        {/* Logo / Name */}
         <Link
           to="/"
           className="flex items-center gap-2 font-bold text-foreground hover:text-primary transition-colors"
         >
           <span className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold">
-            YN
+            DS
           </span>
-          <span className="hidden sm:block">Your Name</span>
+          <span className="hidden sm:block">Daniel Sánchez</span>
         </Link>
 
         {/* Desktop links */}
