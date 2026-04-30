@@ -39,12 +39,13 @@ function App() {
           <CardContent>
             <div className="flex items-center gap-8">
               <p className="flex-1 leading-relaxed">
-                I am a passionate and driven professional seeking
-                opportunities that will leverage my extensive experience
-                in frontend development while providing continuous growth
-                and learning opportunities. My goal is to contribute to
-                innovative projects that challenge me to expand my skill
-                set and make meaningful impacts through technology.
+                Multiplatform Application Developer specialized in process
+                automation and API integration, currently expanding into
+                Data Science and Artificial Intelligence. Experienced in
+                building automated workflows using tools like n8n and
+                connecting external services to optimize real-world
+                processes. Strong problem-solving mindset with a focus on
+                efficiency, scalability, and continuous learning.
               </p>
               <img
                 src="/daniel.jpg"
