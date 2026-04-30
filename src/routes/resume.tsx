@@ -15,7 +15,26 @@ export const Route = createFileRoute('/resume')({
   component: App,
 })
 
+function sortByStartDateDesc<T extends { startDate: string }>(items: T[]) {
+  return [...items].sort((a, b) => b.startDate.localeCompare(a.startDate))
+}
+
+function formatDateRange(startDate: string, endDate?: string, fallback?: string) {
+  if (!endDate) {
+    return fallback ?? startDate
+  }
+
+  if (endDate === startDate) {
+    return startDate
+  }
+
+  return `${startDate} - ${endDate}`
+}
+
 function App() {
+  const jobs = sortByStartDateDesc(allJobs)
+  const educations = sortByStartDateDesc(allEducations)
+
   return (
     <div className="min-h-screen p-8 lg:p-12">
       <div className="max-w-4xl mx-auto space-y-12">
@@ -62,7 +81,7 @@ function App() {
             Work Experience
           </h2>
           <div className="space-y-6">
-            {allJobs.map((job) => (
+            {jobs.map((job) => (
               <Card key={job.jobTitle}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
@@ -75,7 +94,7 @@ function App() {
                       </p>
                     </div>
                     <Badge variant="secondary" className="text-sm">
-                      {job.startDate} - {job.endDate || 'Present'}
+                      {formatDateRange(job.startDate, job.endDate, 'Present')}
                     </Badge>
                   </div>
                 </CardHeader>
@@ -119,12 +138,17 @@ function App() {
             Education
           </h2>
           <div className="space-y-6">
-            {allEducations.map((education) => (
+            {educations.map((education) => (
               <Card key={education.school}>
                 <CardHeader>
-                  <CardTitle className="text-xl">
-                    {education.school}
-                  </CardTitle>
+                  <div className="flex justify-between items-start gap-4">
+                    <CardTitle className="text-xl">
+                      {education.school}
+                    </CardTitle>
+                    <Badge variant="secondary" className="text-sm shrink-0">
+                      {formatDateRange(education.startDate, education.endDate)}
+                    </Badge>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <p className="leading-relaxed">

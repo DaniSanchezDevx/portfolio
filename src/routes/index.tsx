@@ -390,6 +390,18 @@ function sortNewestFirst(entries: TimelineEntry[]) {
   })
 }
 
+function formatTimelineDate(startDate: string, endDate?: string, fallback?: string) {
+  if (!endDate) {
+    return fallback ?? startDate
+  }
+
+  if (endDate === startDate) {
+    return startDate
+  }
+
+  return `${startDate} — ${endDate}`
+}
+
 function TimelineEntries({ entries }: { entries: TimelineEntry[] }) {
   return (
     <div className="relative">
@@ -462,7 +474,7 @@ function Timeline() {
     type: 'work',
     title: j.jobTitle,
     subtitle: `${j.company} · ${j.location}`,
-    date: `${j.startDate} — ${j.endDate ?? 'Present'}`,
+    date: formatTimelineDate(j.startDate, j.endDate, 'Present'),
     summary: j.summary,
     tags: j.tags,
   })))
@@ -471,7 +483,7 @@ function Timeline() {
     type: 'education',
     title: e.school,
     subtitle: e.summary,
-    date: `${e.startDate} — ${e.endDate ?? 'Present'}`,
+    date: formatTimelineDate(e.startDate, e.endDate),
     summary: '',
     tags: e.tags,
   })))
