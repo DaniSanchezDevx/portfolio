@@ -77,7 +77,6 @@ export const Route = createFileRoute('/api/contact')({
           body: JSON.stringify({
             from,
             to,
-            reply_to: email,
             subject: `Portfolio contact from ${name}`,
             html: buildEmailHtml({ name, email, message }),
             text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
@@ -85,8 +84,14 @@ export const Route = createFileRoute('/api/contact')({
         })
 
         if (!response.ok) {
+          const resendError = await response.text()
+          console.error('[api/contact] Resend send failed', {
+            status: response.status,
+            body: resendError,
+          })
+
           return Response.json(
-            { error: 'Could not send the message. Please try again later.' },
+            { error: getContactErrorMessage(response.status, resendError) },
             { status: 502 },
           )
         }
@@ -99,6 +104,22 @@ export const Route = createFileRoute('/api/contact')({
 
 function normalize(value: unknown) {
   return typeof value === 'string' ? value.trim() : ''
+}
+
+function getContactErrorMessage(status: number, body: string) {
+  if (status === 403 && body.includes('resend.dev')) {
+    return 'Resend needs your account email or a verified domain before this form can send messages.'
+  }
+
+  if (status === 403 && body.includes('API key')) {
+    return 'The Resend API key is invalid. Please create a new key and update Vercel.'
+  }
+
+  if (body.includes('domain is not verified')) {
+    return 'The sender domain is not verified in Resend.'
+  }
+
+  return 'Could not send the message. Please try again later.'
 }
 
 function isValidEmail(email: string) {
