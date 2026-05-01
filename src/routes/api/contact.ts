@@ -111,6 +111,10 @@ function getContactErrorMessage(status: number, body: string) {
     return 'Resend needs your account email or a verified domain before this form can send messages.'
   }
 
+  if (status === 403 && body.includes('testing emails')) {
+    return 'Resend can only send test emails to the email address of your Resend account until you verify a domain.'
+  }
+
   if (status === 403 && body.includes('API key')) {
     return 'The Resend API key is invalid. Please create a new key and update Vercel.'
   }
