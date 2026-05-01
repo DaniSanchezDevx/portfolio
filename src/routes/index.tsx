@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { allJobs, allEducations, allProjects } from 'content-collections'
 import { Badge } from '@/components/ui/badge'
+import { submitContactForm } from '@/lib/contact-form'
 import {
   Github,
   ExternalLink,
@@ -523,6 +524,8 @@ function Timeline() {
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   return (
     <section id="contact" className="py-24 px-4">
@@ -586,7 +589,10 @@ function Contact() {
                 Thanks for reaching out. I'll be in touch soon.
               </p>
               <button
-                onClick={() => setSubmitted(false)}
+                onClick={() => {
+                  setError('')
+                  setSubmitted(false)
+                }}
                 className="mt-2 text-sm text-primary hover:underline"
               >
                 Send another
@@ -596,25 +602,26 @@ function Contact() {
             <form
               name="contact"
               method="POST"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault()
-                const form = e.currentTarget
-                const formData = new FormData(form)
-                fetch('/contact.html', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                  },
-                  body: new URLSearchParams(
-                    formData as unknown as Record<string, string>,
-                  ).toString(),
-                }).then(() => setSubmitted(true))
+                setIsSubmitting(true)
+                setError('')
+
+                try {
+                  await submitContactForm(e.currentTarget)
+                  setSubmitted(true)
+                } catch (err) {
+                  setError(
+                    err instanceof Error
+                      ? err.message
+                      : 'Could not send the message.',
+                  )
+                } finally {
+                  setIsSubmitting(false)
+                }
               }}
               className="space-y-4"
             >
-              <input type="hidden" name="form-name" value="contact" />
               <p hidden>
                 <label>
                   Don't fill this out: <input name="bot-field" />
@@ -663,12 +670,19 @@ function Contact() {
                 />
               </div>
 
+              {error ? (
+                <p className="text-sm text-red-500" role="alert">
+                  {error}
+                </p>
+              ) : null}
+
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/30"
+                disabled={isSubmitting}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/30 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 <Send size={15} />
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           )}

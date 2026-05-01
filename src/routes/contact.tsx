@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Mail, Send } from 'lucide-react'
+import { submitContactForm } from '@/lib/contact-form'
 
 export const Route = createFileRoute('/contact')({
   component: Contact,
@@ -8,6 +9,8 @@ export const Route = createFileRoute('/contact')({
 
 function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   if (submitted) {
     return (
@@ -23,7 +26,10 @@ function Contact() {
             Thanks for reaching out. I'll get back to you as soon as possible.
           </p>
           <button
-            onClick={() => setSubmitted(false)}
+            onClick={() => {
+              setError('')
+              setSubmitted(false)
+            }}
             className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
           >
             Send Another Message
@@ -44,24 +50,26 @@ function Contact() {
         <form
           name="contact"
           method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault()
-            const form = e.currentTarget
-            const formData = new FormData(form)
-            fetch('/contact.html', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: new URLSearchParams(
-                formData as unknown as Record<string, string>,
-              ).toString(),
-            })
-              .then(() => setSubmitted(true))
+            setIsSubmitting(true)
+            setError('')
+
+            try {
+              await submitContactForm(e.currentTarget)
+              setSubmitted(true)
+            } catch (err) {
+              setError(
+                err instanceof Error
+                  ? err.message
+                  : 'Could not send the message.',
+              )
+            } finally {
+              setIsSubmitting(false)
+            }
           }}
           className="space-y-6"
         >
-          <input type="hidden" name="form-name" value="contact" />
           <p hidden>
             <label>
               Don't fill this out: <input name="bot-field" />
@@ -119,12 +127,19 @@ function Contact() {
             />
           </div>
 
+          {error ? (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium disabled:cursor-not-allowed disabled:opacity-70"
           >
             <Send size={16} />
-            Send Message
+            {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
         </form>
       </div>
