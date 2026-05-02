@@ -89,6 +89,10 @@ export const projectDescriptionTranslations = {
     en: 'Responsive developer portfolio built with TanStack Start, typed Markdown content, dark mode, project pages, resume detail, and a working Vercel contact form.',
     es: 'Portfolio responsive desarrollado con TanStack Start, contenido Markdown tipado, modo oscuro, páginas de proyectos, CV detallado y formulario de contacto funcional en Vercel.',
   },
+  mypetmanager: {
+    en: 'Android app built with Kotlin to manage pets, veterinary appointments, vaccines, treatments, local reminders, and user-specific pet data.',
+    es: 'Aplicación Android desarrollada en Kotlin para gestionar mascotas, citas veterinarias, vacunas, tratamientos, recordatorios locales y datos por usuario.',
+  },
 }
 
 export const jobTranslations = {
