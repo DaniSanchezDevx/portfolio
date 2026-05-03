@@ -47,7 +47,7 @@ const LINKEDIN_URL = 'https://www.linkedin.com/in/daniel-josé-sánchez-moares-2
 const GITHUB_URL = 'https://github.com/DaniSanchezDevx'
 
 const HERO_SPLINE_SCENE_URL =
-  'https://prod.spline.design/9eeg-Vh0vd99jgoI/scene.splinecode'
+  'https://prod.spline.design/J3O5wNBtPYAM2KpV/scene.splinecode'
 
 const HOME_COPY = {
   en: {
@@ -252,83 +252,90 @@ function Hero() {
       id="hero"
       className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden dot-grid"
     >
-      <div className="absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
-        <spline-viewer
-          url={HERO_SPLINE_SCENE_URL}
-          className="h-full w-full opacity-40 dark:opacity-35"
-        />
-        <div className="absolute inset-0 bg-background/45 dark:bg-background/60" />
-        <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-background to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background/70 to-transparent" />
-      </div>
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(340px,520px)]">
+        <div className="mx-auto max-w-3xl space-y-6 text-center lg:mx-0 lg:text-left">
+          {/* Available badge */}
+          <div className="animate-fade-in inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-sm">
+            {/* REPLACE "Open to opportunities" with your current status */}
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            {copy.available}
+          </div>
 
-      <div className="relative z-10 text-center max-w-3xl mx-auto space-y-6">
-        {/* Available badge */}
-        <div className="animate-fade-in inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 text-primary text-sm">
-          {/* REPLACE "Open to opportunities" with your current status */}
-          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-          {copy.available}
+          {/* Name — REPLACE YOUR_NAME above */}
+          <h1 className="animate-fade-in-up text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
+            {copy.heroGreeting}{' '}
+            <span className="gradient-text">{YOUR_NAME}</span>
+          </h1>
+
+          {/* Headline */}
+          <p className="animate-fade-in-up delay-100 text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed lg:mx-0">
+            {copy.headline}
+          </p>
+
+          {/* Intro */}
+          <p className="animate-fade-in-up delay-200 text-base text-muted-foreground/80 max-w-lg mx-auto lg:mx-0">
+            {copy.intro}
+          </p>
+
+          {/* CTA buttons */}
+          <div className="animate-fade-in-up delay-300 flex flex-wrap gap-3 justify-center lg:justify-start">
+            <a
+              href="/#projects"
+              className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5"
+            >
+              {copy.viewProjects}
+            </a>
+            <a
+              href="/#contact"
+              className="px-6 py-3 rounded-lg border border-border bg-secondary text-secondary-foreground font-medium hover:border-primary/60 transition-all hover:-translate-y-0.5"
+            >
+              {copy.contactMe}
+            </a>
+          </div>
+
+          {/* Social links */}
+          <div className="animate-fade-in-up delay-400 flex items-center justify-center gap-4 lg:justify-start">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="GitHub"
+            >
+              <Github size={20} />
+            </a>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={20} />
+            </a>
+            <a
+              href={`mailto:${EMAIL}`}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Email"
+            >
+              <Mail size={20} />
+            </a>
+          </div>
         </div>
 
-        {/* Name — REPLACE YOUR_NAME above */}
-        <h1 className="animate-fade-in-up text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-          {copy.heroGreeting}{' '}
-          <span className="gradient-text">{YOUR_NAME}</span>
-        </h1>
-
-        {/* Headline */}
-        <p className="animate-fade-in-up delay-100 text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          {copy.headline}
-        </p>
-
-        {/* Intro */}
-        <p className="animate-fade-in-up delay-200 text-base text-muted-foreground/80 max-w-lg mx-auto">
-          {copy.intro}
-        </p>
-
-        {/* CTA buttons */}
-        <div className="animate-fade-in-up delay-300 flex flex-wrap gap-3 justify-center">
-          <a
-            href="/#projects"
-            className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-all hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5"
-          >
-            {copy.viewProjects}
-          </a>
-          <a
-            href="/#contact"
-            className="px-6 py-3 rounded-lg border border-border bg-secondary text-secondary-foreground font-medium hover:border-primary/60 transition-all hover:-translate-y-0.5"
-          >
-            {copy.contactMe}
-          </a>
-        </div>
-
-        {/* Social links */}
-        <div className="animate-fade-in-up delay-400 flex items-center justify-center gap-4">
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="GitHub"
-          >
-            <Github size={20} />
-          </a>
-          <a
-            href={LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="LinkedIn"
-          >
-            <Linkedin size={20} />
-          </a>
-          <a
-            href={`mailto:${EMAIL}`}
-            className="text-muted-foreground hover:text-foreground transition-colors"
-            aria-label="Email"
-          >
-            <Mail size={20} />
-          </a>
+        <div
+          className="relative hidden h-[520px] min-h-0 lg:block"
+          aria-hidden="true"
+        >
+          <div className="absolute inset-y-8 right-0 w-full rounded-2xl border border-border/40 bg-card/20 shadow-2xl shadow-primary/10 backdrop-blur-sm" />
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            <spline-viewer
+              url={HERO_SPLINE_SCENE_URL}
+              className="h-full w-full"
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 rounded-b-2xl bg-gradient-to-t from-background via-background/45 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
         </div>
       </div>
 
