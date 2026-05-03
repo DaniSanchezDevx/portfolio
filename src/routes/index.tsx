@@ -20,7 +20,7 @@ import {
   GraduationCap,
   Send,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 export const Route = createFileRoute('/')({
   component: Portfolio,
@@ -52,6 +52,8 @@ const HERO_SPLINE_SCENE_URL =
 
 const PROJECTS_SPLINE_SCENE_URL =
   'https://prod.spline.design/2KfZbDRazFbmijpG/scene.splinecode'
+
+type PortfolioProject = (typeof allProjects)[number]
 
 const HOME_COPY = {
   en: {
@@ -482,9 +484,104 @@ function Skills() {
 
 // ─── Projects Section ─────────────────────────────────────────────────────────
 
+function getProjectCardStyle(
+  index: number,
+  activeIndex: number,
+  total: number,
+): CSSProperties {
+  const rawOffset = (index - activeIndex + total) % total
+  const centeredOffset =
+    rawOffset > total / 2 ? rawOffset - total : rawOffset
+  const clampedOffset = Math.max(-2, Math.min(2, centeredOffset))
+  const depth = Math.abs(clampedOffset)
+
+  return {
+    transform: `translateX(${clampedOffset * 120}px) rotate(${
+      clampedOffset * 8
+    }deg) scale(${1 - depth * 0.08})`,
+    zIndex: 10 - depth,
+    opacity: 1 - depth * 0.16,
+  }
+}
+
+function ProjectCardContent({
+  project,
+  language,
+  copy,
+}: {
+  project: PortfolioProject
+  language: 'en' | 'es'
+  copy: (typeof HOME_COPY)['en']
+}) {
+  return (
+    <>
+      <div className="flex-1">
+        <h3 className="font-semibold text-foreground text-lg mb-2">
+          {project.title}
+        </h3>
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {pickLanguage(
+            language,
+            projectDescriptionTranslations[
+              project._meta.path as keyof typeof projectDescriptionTranslations
+            ] ?? {
+              en: project.description,
+              es: project.description,
+            },
+          )}
+        </p>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {project.tags.map((tag) => (
+          <Badge
+            key={tag}
+            variant="secondary"
+            className="text-xs border border-border"
+          >
+            {tag}
+          </Badge>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-4 pt-2 border-t border-border">
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => event.stopPropagation()}
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Github size={15} />
+            GitHub
+          </a>
+        )}
+        {project.liveUrl && (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(event) => event.stopPropagation()}
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 transition-colors"
+          >
+            <ExternalLink size={15} />
+            {copy.liveDemo}
+          </a>
+        )}
+      </div>
+    </>
+  )
+}
+
 function Projects() {
   const projects = allProjects
+  const [activeProject, setActiveProject] = useState(0)
   const { language, copy } = useHomeCopy()
+
+  const rotateProjects = () => {
+    setActiveProject((current) => (current + 1) % projects.length)
+  }
 
   return (
     <section id="projects" className="relative overflow-hidden py-24 px-4">
@@ -512,7 +609,54 @@ function Projects() {
           />
         </ScrollReveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <ScrollReveal className="mt-12 hidden md:block">
+          <div className="relative mx-auto h-[430px] max-w-[780px] [perspective:1200px]">
+            {projects.map((project, index) => (
+              <article
+                key={project._meta.path}
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (index === activeProject) {
+                    rotateProjects()
+                    return
+                  }
+
+                  setActiveProject(index)
+                }}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') {
+                    return
+                  }
+
+                  event.preventDefault()
+
+                  if (index === activeProject) {
+                    rotateProjects()
+                    return
+                  }
+
+                  setActiveProject(index)
+                }}
+                className="absolute left-1/2 top-0 flex h-[390px] w-[340px] -translate-x-1/2 cursor-pointer flex-col gap-4 rounded-xl border border-border/75 bg-card/86 p-6 text-left shadow-2xl shadow-background/25 backdrop-blur-sm transition-all duration-500 ease-out card-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                style={getProjectCardStyle(
+                  index,
+                  activeProject,
+                  projects.length,
+                )}
+                aria-label={`View ${project.title}`}
+              >
+                <ProjectCardContent
+                  project={project}
+                  language={language}
+                  copy={copy}
+                />
+              </article>
+            ))}
+          </div>
+        </ScrollReveal>
+
+        <div className="mt-12 grid gap-6 md:hidden">
           {projects.map((project, index) => (
             <ScrollReveal
               key={project._meta.path}
@@ -520,59 +664,11 @@ function Projects() {
               className="h-full"
             >
               <div className="h-full bg-card/84 border border-border/75 rounded-xl p-6 flex flex-col gap-4 shadow-lg shadow-background/20 backdrop-blur-sm card-glow">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-foreground text-lg mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {pickLanguage(
-                      language,
-                      projectDescriptionTranslations[
-                        project._meta.path as keyof typeof projectDescriptionTranslations
-                      ] ?? {
-                        en: project.description,
-                        es: project.description,
-                      },
-                    )}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className="text-xs border border-border"
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-4 pt-2 border-t border-border">
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Github size={15} />
-                      GitHub
-                    </a>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <ExternalLink size={15} />
-                      {copy.liveDemo}
-                    </a>
-                  )}
-                </div>
+                <ProjectCardContent
+                  project={project}
+                  language={language}
+                  copy={copy}
+                />
               </div>
             </ScrollReveal>
           ))}
