@@ -638,7 +638,7 @@ function Projects() {
 
                   setActiveProject(index)
                 }}
-                className="absolute left-1/2 top-0 flex h-[390px] w-[340px] -translate-x-1/2 cursor-pointer flex-col gap-4 rounded-xl border border-border/75 bg-card/86 p-6 text-left shadow-2xl shadow-background/25 backdrop-blur-sm transition-all duration-500 ease-out card-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                className="absolute left-1/2 top-0 flex h-[390px] w-[340px] -translate-x-1/2 cursor-pointer flex-col gap-4 rounded-xl border border-border/80 bg-card/72 p-6 text-left shadow-2xl shadow-background/35 backdrop-blur-lg transition-all duration-500 ease-out card-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 style={getProjectCardStyle(
                   index,
                   activeProject,
@@ -663,7 +663,7 @@ function Projects() {
               delay={index * 90}
               className="h-full"
             >
-              <div className="h-full bg-card/84 border border-border/75 rounded-xl p-6 flex flex-col gap-4 shadow-lg shadow-background/20 backdrop-blur-sm card-glow">
+              <div className="h-full bg-card/74 border border-border/80 rounded-xl p-6 flex flex-col gap-4 shadow-lg shadow-background/30 backdrop-blur-lg card-glow">
                 <ProjectCardContent
                   project={project}
                   language={language}
