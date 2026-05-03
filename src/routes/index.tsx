@@ -378,11 +378,11 @@ function About() {
             delay={100}
             className="flex flex-col items-center md:items-start gap-6"
           >
-            <div className="w-48 h-48 rounded-2xl bg-secondary border border-border overflow-hidden card-glow">
+            <div className="h-80 w-56 rounded-2xl bg-secondary border border-border overflow-hidden card-glow">
               <img
                 src="/daniel.jpg"
                 alt={YOUR_NAME}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
             </div>
             <div className="flex flex-wrap gap-2">

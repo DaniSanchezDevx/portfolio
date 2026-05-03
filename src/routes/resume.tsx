@@ -72,7 +72,7 @@ function App() {
               <img
                 src="/daniel.jpg"
                 alt={copy.headshotAlt}
-                className="mx-auto h-52 w-44 rounded-lg object-cover sm:mx-0 sm:rounded-xl"
+                className="mx-auto h-64 w-44 rounded-lg object-cover sm:mx-0 sm:rounded-xl"
               />
             </div>
           </CardContent>
