@@ -46,7 +46,7 @@ const themeScript = `
 `
 
 const SPLINE_VIEWER_SCRIPT =
-  'https://unpkg.com/@splinetool/viewer@1.12.91/build/spline-viewer.js'
+  'https://unpkg.com/@splinetool/viewer@1.12.90/build/spline-viewer.js'
 
 function ThemeToggle({
   dark,
@@ -180,46 +180,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     setInitialLanguage(getInitialLanguage())
   }, [])
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 1024px)')
-
-    const updatePointer = (event: MouseEvent) => {
-      if (!mediaQuery.matches) {
-        return
-      }
-
-      document.documentElement.style.setProperty(
-        '--cursor-x',
-        `${event.clientX}px`,
-      )
-      document.documentElement.style.setProperty(
-        '--cursor-y',
-        `${event.clientY}px`,
-      )
-      document.documentElement.style.setProperty('--cursor-active', '1')
-    }
-
-    const handleLeave = () => {
-      document.documentElement.style.setProperty('--cursor-active', '0')
-    }
-
-    const handleMediaChange = (event: MediaQueryListEvent) => {
-      if (!event.matches) {
-        document.documentElement.style.setProperty('--cursor-active', '0')
-      }
-    }
-
-    window.addEventListener('mousemove', updatePointer, { passive: true })
-    window.addEventListener('mouseleave', handleLeave)
-    mediaQuery.addEventListener('change', handleMediaChange)
-
-    return () => {
-      window.removeEventListener('mousemove', updatePointer)
-      window.removeEventListener('mouseleave', handleLeave)
-      mediaQuery.removeEventListener('change', handleMediaChange)
-    }
-  }, [])
-
   const toggleTheme = () => {
     const next = !dark
     setDark(next)
@@ -240,17 +200,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         {/* eslint-disable-next-line react/no-danger */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="relative overflow-x-hidden">
+      <body>
         <LanguageProvider initialLanguage={initialLanguage}>
-          <div
-            className="cursor-spline-glow pointer-events-none fixed inset-0 z-0 hidden lg:block"
-            aria-hidden="true"
-          />
-
-          <div className="relative z-10">
-            <NavBar dark={dark} onToggle={toggleTheme} />
-            {children}
-          </div>
+          <NavBar dark={dark} onToggle={toggleTheme} />
+          {children}
         </LanguageProvider>
         <Scripts />
       </body>
