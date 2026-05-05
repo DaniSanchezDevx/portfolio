@@ -9,6 +9,32 @@ Este proyecto centraliza mi perfil como desarrollador, mi experiencia, mi formac
 - Web en produccion: [danisanchezdev.vercel.app](https://danisanchezdev.vercel.app)
 - Repositorio: [Proyecto-Master-DataScience-Evolve-DanielJoseSanchezMoares](https://github.com/DaniSanchezDevx/Proyecto-Master-DataScience-Evolve-DanielJoseSanchezMoares)
 
+## Capturas del proyecto
+
+### Hero principal
+
+![Hero del portfolio](public/readme/hero.png)
+
+### Sobre mi
+
+![Seccion sobre mi](public/readme/about.png)
+
+### Habilidades y tecnologias
+
+![Seccion de habilidades](public/readme/skills.png)
+
+### Proyectos
+
+![Seccion de proyectos](public/readme/projects.png)
+
+### Experiencia y formacion
+
+![Seccion de experiencia](public/readme/experience.png)
+
+### Contacto
+
+![Seccion de contacto](public/readme/contact.png)
+
 ## Objetivo del proyecto
 
 El portfolio ha sido disenado para:
