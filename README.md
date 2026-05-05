@@ -98,7 +98,6 @@ package.json           Dependencias y scripts
 - MyPetManager
 - RecetAI Streamlit OpenAI
 - Conversor Divisas Python
-- Portfolio
 
 ## Como ejecutar el proyecto en local
 
