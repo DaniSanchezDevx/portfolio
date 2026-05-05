@@ -77,6 +77,10 @@ export function pickLanguage<T>(language: Language, values: { en: T; es: T }) {
 }
 
 export const projectDescriptionTranslations = {
+  'conversor-divisas-python': {
+    en: 'Python currency converter with CLI mode, Tkinter desktop interface, CSV batch processing, and live exchange rates from a public API.',
+    es: 'Conversor de divisas en Python con modo CLI, interfaz de escritorio en Tkinter, procesamiento por CSV y tipos de cambio en tiempo real desde una API publica.',
+  },
   'cvpilot-ai': {
     en: 'Full-stack SaaS application that analyzes resumes against job descriptions to improve ATS compatibility, keyword coverage, and interview readiness.',
     es: 'Aplicación SaaS full-stack que analiza CVs frente a ofertas de empleo para mejorar la compatibilidad ATS, la cobertura de palabras clave y la preparación de entrevistas.',
@@ -88,6 +92,10 @@ export const projectDescriptionTranslations = {
   portfolio: {
     en: 'Responsive developer portfolio built with TanStack Start, typed Markdown content, dark mode, project pages, resume detail, and a working Vercel contact form.',
     es: 'Portfolio responsive desarrollado con TanStack Start, contenido Markdown tipado, modo oscuro, páginas de proyectos, CV detallado y formulario de contacto funcional en Vercel.',
+  },
+  'recetai-streamlit-openai': {
+    en: 'Streamlit web app that uses OpenAI to generate personalized recipes from available ingredients, dietary preferences, and cooking constraints.',
+    es: 'Aplicacion web en Streamlit que usa OpenAI para generar recetas personalizadas a partir de ingredientes disponibles, preferencias dieteticas y restricciones de cocina.',
   },
   mypetmanager: {
     en: 'Android app built with Kotlin to manage pets, veterinary appointments, vaccines, treatments, local reminders, and user-specific pet data.',

@@ -579,8 +579,12 @@ function Projects() {
   const [activeProject, setActiveProject] = useState(0)
   const { language, copy } = useHomeCopy()
 
-  const rotateProjects = () => {
-    setActiveProject((current) => (current + 1) % projects.length)
+  const openProjectLink = (project: PortfolioProject) => {
+    if (!project.github || typeof window === 'undefined') {
+      return
+    }
+
+    window.open(project.github, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -614,11 +618,11 @@ function Projects() {
             {projects.map((project, index) => (
               <article
                 key={project._meta.path}
-                role="button"
+                role={project.github ? 'link' : 'button'}
                 tabIndex={0}
                 onClick={() => {
                   if (index === activeProject) {
-                    rotateProjects()
+                    openProjectLink(project)
                     return
                   }
 
@@ -632,7 +636,7 @@ function Projects() {
                   event.preventDefault()
 
                   if (index === activeProject) {
-                    rotateProjects()
+                    openProjectLink(project)
                     return
                   }
 
@@ -644,7 +648,11 @@ function Projects() {
                   activeProject,
                   projects.length,
                 )}
-                aria-label={`View ${project.title}`}
+                aria-label={
+                  index === activeProject && project.github
+                    ? `Open ${project.title} on GitHub`
+                    : `Bring ${project.title} to the front`
+                }
               >
                 <ProjectCardContent
                   project={project}
@@ -663,13 +671,35 @@ function Projects() {
               delay={index * 90}
               className="h-full"
             >
-              <div className="h-full bg-card/74 border border-border/80 rounded-xl p-6 flex flex-col gap-4 shadow-lg shadow-background/30 backdrop-blur-lg card-glow">
+              <article
+                role={project.github ? 'link' : undefined}
+                tabIndex={project.github ? 0 : undefined}
+                onClick={() => openProjectLink(project)}
+                onKeyDown={(event) => {
+                  if (!project.github) {
+                    return
+                  }
+
+                  if (event.key !== 'Enter' && event.key !== ' ') {
+                    return
+                  }
+
+                  event.preventDefault()
+                  openProjectLink(project)
+                }}
+                aria-label={
+                  project.github
+                    ? `Open ${project.title} on GitHub`
+                    : undefined
+                }
+                className="h-full bg-card/74 border border-border/80 rounded-xl p-6 flex flex-col gap-4 shadow-lg shadow-background/30 backdrop-blur-lg card-glow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              >
                 <ProjectCardContent
                   project={project}
                   language={language}
                   copy={copy}
                 />
-              </div>
+              </article>
             </ScrollReveal>
           ))}
         </div>
