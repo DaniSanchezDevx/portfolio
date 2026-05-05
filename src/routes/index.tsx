@@ -47,9 +47,6 @@ const LINKEDIN_URL = 'https://www.linkedin.com/in/daniel-josé-sánchez-moares-2
 /** REPLACE with your GitHub URL */
 const GITHUB_URL = 'https://github.com/DaniSanchezDevx'
 
-const HERO_SPLINE_SCENE_URL =
-  'https://prod.spline.design/ZCX1bnCPumcrfJ0g/scene.splinecode'
-
 const PROJECTS_SPLINE_SCENE_URL =
   'https://prod.spline.design/2KfZbDRazFbmijpG/scene.splinecode'
 
@@ -258,17 +255,6 @@ function Hero() {
       id="hero"
       className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden dot-grid"
     >
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[58vw] min-w-[560px] lg:block">
-        <spline-viewer
-          url={HERO_SPLINE_SCENE_URL}
-          className="h-full w-full opacity-85 dark:opacity-80"
-        />
-        <div className="absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-background via-background/75 to-transparent" />
-        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-background/85 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-background via-background/45 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background/55 to-transparent" />
-      </div>
-
       <div className="relative z-10 mx-auto w-full max-w-6xl">
         <div className="max-w-3xl space-y-6 text-center lg:max-w-2xl lg:text-left">
           {/* Available badge */}
@@ -590,7 +576,7 @@ function Projects() {
   return (
     <section id="projects" className="relative overflow-hidden py-24 px-4">
       <div
-        className="pointer-events-none absolute -inset-x-20 inset-y-[-18%] z-0 opacity-80 dark:opacity-65"
+        className="pointer-events-none absolute -inset-x-20 inset-y-[-18%] z-0 opacity-80 dark:opacity-65 lg:hidden"
         aria-hidden="true"
       >
         <spline-viewer
