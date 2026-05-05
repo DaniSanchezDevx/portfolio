@@ -27,9 +27,13 @@ Este proyecto centraliza mi perfil como desarrollador, mi experiencia, mi formac
 
 ![Seccion de proyectos](public/readme/projects.png)
 
-### Experiencia y formacion
+### Experiencia
 
 ![Seccion de experiencia](public/readme/experience.png)
+
+### Formacion
+
+![Seccion de formacion](public/readme/education.png)
 
 ### Contacto
 
